@@ -7,6 +7,7 @@
 		<title>15 Puzzle Vue.js</title>
 
 		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet">
+		
 		<style>
 			.game-frame {
 				min-height: 100vh;
@@ -36,10 +37,11 @@
 				vertical-align: top;
 				border: 0;
 				border-radius: .2em;
-				background: #42b983;
+				background-color: #42b983;
 				color: #fff;
 				user-select: none;
 				cursor: pointer;
+				transition-color: background .25s;
 			}
 
 			[free="true"] {
