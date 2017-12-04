@@ -168,54 +168,54 @@
 					 */
 					if ((y - 1 >= 0) && (puzzleGrid[y - 1][x].state.free == true)) {
 						this.$emit('successfulMove');
-						swap('up', x, y);
+						this.swap('up', x, y);
 					} else if ((y + 1 <= gridDimension - 1) && (puzzleGrid[y + 1][x].state.free == true)) {
 						this.$emit('successfulMove');
-						swap('down', x, y);
+						this.swap('down', x, y);
 					} else if ((x - 1 >= 0) && (puzzleGrid[y][x - 1].state.free == true)) {
 						this.$emit('successfulMove');
-						swap('left', x, y);
+						this.swap('left', x, y);
 					} else if ((x + 1 <= gridDimension - 1) && (puzzleGrid[y][x + 1].state.free == true)) {
 						this.$emit('successfulMove');
-						swap('right', x, y);
+						this.swap('right', x, y);
 					} else {
 						this.$emit('specialEvent', 'This tile cannot be moved');
 						return false;
 					}
-
+				},
+				swap: function(direction, x, y) {
 					/**
 					 * Swap two adjacent tile' states in the given direction
+					 * And call checkVictory()
 					 */
-					function swap(direction, x, y) {
-						if (direction == 'up') {
-							[puzzleGrid[y][x].state, puzzleGrid[y - 1][x].state] = [puzzleGrid[y - 1][x].state, puzzleGrid[y][x].state];
-						} else if (direction == 'down') {
-							[puzzleGrid[y][x].state, puzzleGrid[y + 1][x].state] = [puzzleGrid[y + 1][x].state, puzzleGrid[y][x].state];
-						} else if (direction == 'left') {
-							[puzzleGrid[y][x].state, puzzleGrid[y][x - 1].state] = [puzzleGrid[y][x - 1].state, puzzleGrid[y][x].state];
-						} else if (direction == 'right') {
-							[puzzleGrid[y][x].state, puzzleGrid[y][x + 1].state] = [puzzleGrid[y][x + 1].state, puzzleGrid[y][x].state];
-						}
+					if (direction == 'up') {
+						[puzzleGrid[y][x].state, puzzleGrid[y - 1][x].state] = [puzzleGrid[y - 1][x].state, puzzleGrid[y][x].state];
+						this.checkVictory();
+					} else if (direction == 'down') {
+						[puzzleGrid[y][x].state, puzzleGrid[y + 1][x].state] = [puzzleGrid[y + 1][x].state, puzzleGrid[y][x].state];
+						this.checkVictory();
+					} else if (direction == 'left') {
+						[puzzleGrid[y][x].state, puzzleGrid[y][x - 1].state] = [puzzleGrid[y][x - 1].state, puzzleGrid[y][x].state];
+						this.checkVictory();
+					} else if (direction == 'right') {
+						[puzzleGrid[y][x].state, puzzleGrid[y][x + 1].state] = [puzzleGrid[y][x + 1].state, puzzleGrid[y][x].state];
+						this.checkVictory();
 					}
-
+				},
+				checkVictory: function() {
 					/**
 					 * Verify if the puzzle grid is correctly filled by comparing it to puzzle grid victory
 					 */
-					function checkVictory() {
-						for (let i = 0; i < gridDimension; i++) {
-							for (let j = 0; j < gridDimension; j++) {
-								if (puzzleGrid[i][j].state.label !== puzzleGridVictory[i][j].state.label) {
-									return false;
-								}
+					for (let i = 0; i < gridDimension; i++) {
+						for (let j = 0; j < gridDimension; j++) {
+							if (puzzleGrid[i][j].state.label !== puzzleGridVictory[i][j].state.label) {
+								return false;
 							}
 						}
-						return true;
 					}
-
-					if (checkVictory() == true) {
-						this.$emit('specialEvent', 'Victory!');
-					};
-				},
+					this.$emit('specialEvent', 'Victory!');
+					return true;
+				}
 			},
 		});
 
